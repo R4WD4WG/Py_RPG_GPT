@@ -2,6 +2,10 @@
 
 import tkinter as tk
 
+###############################################################################################
+### Game classes ##############################################################################
+###############################################################################################
+
 # Location class
 class Location:
     def __init__(self, name, description):
@@ -56,7 +60,10 @@ class Player:
     def remove_item(self, item):
         self.inventory.remove(item)
 
-# Game utility functions
+###############################################################################################
+### Game utility functions ####################################################################
+###############################################################################################
+
 def ask_question(prompt, callback):
     display_message(prompt)
     button.config(command=lambda: submit_message(callback))
@@ -74,13 +81,27 @@ def display_message(message):
     text_box1.config(state="disabled")
     text_box1.yview("end")
 
-# Main game functions
+###############################################################################################
+### Main game functions #######################################################################
+###############################################################################################
+
 def set_player_name():
     global player_name
     player_name = text_box2.get("1.0", "end").strip().capitalize()
     text_box2.delete("1.0", "end")
-    display_message("Welcome to the game, " + player_name + "!")
-    start_game_intro()
+
+    def confirm_name(choice):
+        if choice.lower() == "yes":
+            display_message("Welcome to the game, " + player_name + "!")
+            start_game_intro()
+        elif choice.lower() == "no":
+            display_message("Please enter your name again and press submit.")
+            button.config(command=set_player_name)  # Configure the button to call set_player_name again
+        else:
+            display_message("Invalid choice. Please type 'yes' or 'no' and press submit.")
+            ask_question("Is " + player_name + " your desired name? (yes/no):", confirm_name)
+
+    ask_question("Is " + player_name + " your desired name? (yes/no):", confirm_name)
 
 def handle_game_choice(choice):
     if choice == "1":
@@ -99,6 +120,10 @@ def start_game_intro():
     display_message("2. Join the adventurer's guild")
     display_message("3. Study at the magic academy")
     ask_question("Enter the number corresponding to your choice:", handle_game_choice)
+
+###############################################################################################
+### Tkinter Window Intialize ##################################################################
+###############################################################################################
 
 # Create the main window
 root = tk.Tk()
