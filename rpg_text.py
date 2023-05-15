@@ -17,13 +17,18 @@ class Location:
     def __init__(self, name, description):
         self.name = name
         self.description = description
-        
+
 locations = {
-    "location_1": Location("Forest", "You are in a forest. There are trees all around you."),
-    "location_2": Location("Village", "A small village with friendly people."),
-    "location_3": Location("Mountain", "You are at the base of a towering mountain range."),
-    "location_4": Location("River", "A swift river courses through here."),
-    "location_5": Location("Castle", "A majestic castle stands in the distance."),
+    "childhood_small_village": Location("Small Village", "Small Village"),
+    "childhood_capital": Location("Capital", "Capital"),
+    "childhood_wolves": Location("Wolves", "Wolves"),
+    "childhood_slums": Location("Slums", "Slums"),
+    "childhood_wealthy": Location("Wealthy", "Wealthy"),
+    "childhood_royalty": Location("Royalty", "Royalty"),
+    "childhood_monks": Location("Monks", "Monks"),
+    "childhood_clowns": Location("Clowns", "Clowns"),
+    "childhood_brothel": Location("Brothel", "Brothel"),
+    "childhood_prison": Location("Prison", "Prison"),
 }
 
 
@@ -62,6 +67,7 @@ class Player:
         self.mp = 3
         self.skill_points = 0
         self.role = None # warrior, mage, rogue, bard, beastmaster
+        hero.background = None # childhood background, determines starting location
 
     def add_item(self, item):
         if len(self.inventory) < 30:
@@ -104,6 +110,44 @@ def display_message(message):
     text_box1.yview("end")
 
 
+# assign skill points function
+def assign_skill_points():
+    display_message("You have " + str(hero.skill_points) + " skill points to assign.")
+    display_message("Your current stats are:")
+    display_message("Attack: " + str(hero.attack))
+    display_message("Defense: " + str(hero.defense))
+    display_message("Magic: " + str(hero.magic))
+    display_message("Speed: " + str(hero.speed))
+    display_message("Luck: " + str(hero.luck))
+    display_message("Charisma: " + str(hero.charisma))
+    display_message("Stealth: " + str(hero.stealth))
+    display_message("HP: " + str(hero.hp))
+    display_message("MP: " + str(hero.mp))
+    while hero.skill_points > 0:
+        display_message("Which skill would you like to increase?")
+        display_message("1. Attack")
+        display_message("2. Defense")
+        display_message("3. Magic")
+        display_message("4. Speed")
+        display_message("5. Luck")
+        display_message("6. Charisma")
+        display_message("7. Stealth")
+        display_message("8. HP")
+        display_message("9. MP")
+    
+    display_message("You have no more skill points to assign.")
+    display_message("You are level " + str(hero.level) + " & your stats are:")
+    display_message("Attack: " + str(hero.attack))
+    display_message("Defense: " + str(hero.defense))
+    display_message("Magic: " + str(hero.magic))
+    display_message("Speed: " + str(hero.speed))
+    display_message("Luck: " + str(hero.luck))
+    display_message("Charisma: " + str(hero.charisma))
+    display_message("Stealth: " + str(hero.stealth))
+    display_message("HP: " + str(hero.hp))
+    display_message("MP: " + str(hero.mp))
+
+
 # calculates XP needed for each level (level 100 cap)
 # Makes XP needed for each level to be 100 times the square of the level.
 # Example: Reaching level 2 would require 200 XP, level 3 requires 900 XP & level 4 requires 1600 XP.
@@ -119,6 +163,9 @@ def level_up(hero):
         hero.level += 1
         hero.xp -= old_xp
         level_up(hero)  # Check if the hero can level up again
+    hero.skill_points += 3
+    assign_skill_points()
+
 
 
 # xp gain function
@@ -161,36 +208,73 @@ def set_player_name(message=None):
 
 
 
-def handle_explore_choice(choice):
-    if choice == "1":
-        display_message("You decided to explore further.")
-        explore_world()  # Call explore_world again to go to a new location
-    elif choice == "2":
-        display_message("You have decided to rest for a while.")
-        # Maybe add some code here to restore the player's health or other stats
-    elif choice == "3":
-        display_message("You have decided to return to the crossroads.")
-        start_game_intro()
+# Confirms starting location
+def start_location(choice):
+    def confirm_start_location(choice):
+        if choice.lower() == "yes":
+            pass
+        ### TO CONTINUE ###
+
+    if choice == 1:
+        hero.background = "Small Village"
+        display_message("You grew up in a small village?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 2:
+        hero.background = "Kingdom's Capital"
+        display_message("You grew up in the kingdom's capital?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 3:
+        hero.background = "Raised by Wolves"
+        display_message("You were raised by wolves, you grew up in the forest?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 4:
+        hero.background = "Slums"
+        display_message("You grew up in poverty in the slums?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 5:
+        hero.background = "Wealthy Family"
+        display_message("You grew up in a wealthy family?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 6:
+        hero.background = "Royalty"
+        display_message("You come from royalty?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 7:
+        hero.background = "Raised by Monks"
+        display_message("You were raised by monks after your parents abandoned you?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 8:
+        hero.background = "Traveling Circus"
+        display_message("Your parents were traveling clowns, you grew up on the road circus show?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 9:
+        hero.background = "Raised by prostitutes"
+        display_message("You grew up in a brothel?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
+    elif choice == 10:
+        hero.background = "Prison"
+        display_message("You grew up in a prison?")
+        ask_question("Is this correct? (yes/no):", confirm_start_location)
     else:
-        display_message("Invalid choice. Please try again.")
-        explore_world()  # Ask the question again
+        display_message("Invalid choice. Please choose a number between 1 and 10.")
+        choose_start()
 
 
-def explore_world():
-    # Randomly select a location
-    location_key = random.choice(list(locations.keys()))
-    location = locations[location_key]
-
-    # Display the location's name and description
-    display_message("You have arrived at a new location: " + location.name)
-    display_message(location.description)
-
-    # Ask the player what they want to do
-    display_message("What would you like to do?")
-    display_message("1. Explore further")
-    display_message("2. Rest for a while")
-    display_message("3. Return to the crossroads")
-    ask_question("Enter the number corresponding to your choice:", handle_explore_choice)
+# Set starting location
+def choose_start():
+    hero.background = None
+    display_message("What was your childhood like?")
+    display_message("1. You grew up in a small village.")
+    display_message("2. You grew up in the kingdom's capital.")
+    display_message("3. You were raised by wolves, you grew up in the forest.")
+    display_message("4. You grew up in poverty in the slums.")
+    display_message("5. You grew up in a wealthy family.")
+    display_message("6. You come from royalty.")
+    display_message("7. You were raised by monks after your parents abandoned you.")
+    display_message("8. Your parents were traveling clowns, you grew up on the road circus show.")
+    display_message("9. You grew up in a brothel.")
+    display_message("10. You grew up in a prison.")
+    ask_question("So, do any of these describe your childhood?", start_location())
 
 
 # Increase class base stats function
