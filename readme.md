@@ -1,3 +1,6 @@
+Note: This is abandoned code, barley started.
+
+
 # Tkinter Text-Based Python RPG 🎮
 
 Welcome to a text-based RPG game built with Tkinter and Python, where AI technologies like ChatGPT (GPT-4), Bard, and GitHub CoPilot have lent their wisdom to assist in its creation. It's like the AI is our code-writing buddy! 🤖
